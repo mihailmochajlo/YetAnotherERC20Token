@@ -1,7 +1,9 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-contract Token {
+import "./Ownable.sol";
+
+contract Token is Ownable {
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
 
