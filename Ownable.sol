@@ -7,7 +7,7 @@ contract Ownable
 
     constructor ()
     {
-        transferOwnership(msg.sender);
+        _owner = msg.sender;
     }
 
     function owner() public view returns (address) {
