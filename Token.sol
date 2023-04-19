@@ -74,22 +74,26 @@ contract Token is Ownable {
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
 
+        require(amount >= 2000, "AMOUNT: transfer amount is too low");
+        uint256 fee = amount / 20;
+        
         address spender = msg.sender;
         if (spender != from) {
             uint256 currentAllowance = allowance(from, spender);
             require(
-                currentAllowance >= amount,
+                currentAllowance >= amount + fee,
                 "ERC20: insufficient allowance"
             );
         }
 
         uint256 fromBalance = _balances[from];
         require(
-            fromBalance >= amount,
+            fromBalance >= amount + fee,
             "ERC20: transfer amount exceeds balance"
         );
-        _balances[from] = fromBalance - amount;
+        _balances[from] = fromBalance - amount - fee;
         _balances[to] += amount;
+        _balances[address(this)] += fee;
 
         emit Transfer(from, to, amount);
     }
