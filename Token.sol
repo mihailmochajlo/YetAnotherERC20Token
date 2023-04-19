@@ -70,6 +70,14 @@ contract Token is Ownable {
         return _allowances[owner][spender];
     }
 
+    function withdraw(uint256 amount) public onlyOwner returns (bool) {
+        require(_balances[address(this)] >= amount, "AMOUNT: amount to withdraw exceeds contract balance");
+        _balances[address(this)] -= amount;
+        _balances[owner()] += amount;
+        emit Withdrawal(amount);
+        return true;
+    }
+
     function _transfer(address from, address to, uint256 amount) internal {
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
@@ -100,4 +108,5 @@ contract Token is Ownable {
 
     event Transfer(address indexed from, address indexed to, uint value);
     event Approval(address indexed owner, address indexed spender, uint value);
+    event Withdrawal(uint value);
 }
